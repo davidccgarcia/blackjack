@@ -9,6 +9,13 @@ let deck         = [];
 const tipos      = ['C', 'D', 'H', 'S'];
 const especiales = ['A', 'J', 'Q', 'K'];
 
+let puntosJugador = 0,
+    puntosComputadora = 0;
+
+// Referencias HTML
+const btnPedir = document.querySelector('#btnPedir');
+const puntosHTML = document.querySelectorAll('small');
+
 // Esta función se encarga de ordenar los elementos del array (Mezclar la baraja)
 const shuffle = (array) => {
     return array.sort(() => Math.random() - 0.5);
@@ -28,9 +35,7 @@ const crearDeck = () => {
         }
     }
 
-    // console.log(deck);
     deck = shuffle(deck);
-    console.log(deck);
 }
 
 crearDeck();
@@ -43,9 +48,6 @@ const pedirCarta = () => {
     }
 
     const carta = deck.pop();
-
-    console.log(deck);
-    console.log(carta); // La carta debe ser de la baraja
     return carta;
 }
 
@@ -58,5 +60,10 @@ const valorCarta = (carta) => {
             : valor * 1;
 }
 
-const valor = valorCarta(pedirCarta());
-console.log({ valor });
+// Eventos
+btnPedir.addEventListener('click', () => {
+    const carta = pedirCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+
+    puntosHTML[0].innerText = puntosJugador;
+});
