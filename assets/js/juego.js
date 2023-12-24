@@ -9,6 +9,12 @@ let deck = [];
 let tipos = ['C', 'D', 'H', 'S'];
 let especiales = ['A', 'J', 'Q', 'K'];
 
+let puntosJugador = 0,
+    puntosComputadora = 0;
+
+// Referencias HTML
+const btnNuevaCarta = document.querySelector('#btnNuevaCarta');
+const puntosHTML = document.querySelectorAll('small');
 
 // Esta función se encarga de ordenar los elementos del array (Mezclar la baraja)
 const shuffle = (array) => {
@@ -43,8 +49,6 @@ const pedirCarta = () => {
     }
 
     const carta = deck.pop();
-    console.log(deck);
-    console.log(carta);
     return carta;
 }
 
@@ -66,5 +70,14 @@ const valorCarta = (carta) => {
             : valor * 1;
 }
 
-const carta = pedirCarta();
-console.log(valorCarta(carta));
+// Eventos
+/**
+ * Este detector de eventos se encarga de obtener y 
+ * mostrar los puntos en el HTML
+ */
+btnNuevaCarta.addEventListener('click', () => {
+    const carta = pedirCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+
+    puntosHTML[0].innerText = puntosJugador;
+});
