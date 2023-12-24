@@ -25,7 +25,7 @@ const crearDeck = () => {
 
     for (let tipo of tipos) {
         for (let esp of especiales) {
-            deck.push(tipo + esp);
+            deck.push(esp + tipo);
         }
     }
 
@@ -33,6 +33,8 @@ const crearDeck = () => {
     shuffle(deck);
     console.log(deck);
 }
+
+crearDeck();
 
 // Esta función me permite tomar una carta
 const pedirCarta = () => {
@@ -46,5 +48,23 @@ const pedirCarta = () => {
     return carta;
 }
 
-crearDeck();
-pedirCarta();
+// pedirCarta();
+/**
+ * Esta función me permite saber el valor de una carta
+ * 
+ * Cuando la carta sea A entonces vale 11 puntos, en cualquier 
+ * otro caso el valor de la carta será 10
+ * 
+ * Cuando la carta sea de tipo númerico (5D) entonces el valor 
+ * de la carta será igual a ese número (5)
+ */
+const valorCarta = (carta) => {
+    const valor = carta.substring(0, carta.length - 1);
+
+    return ( isNaN(valor) ) ? 
+            (valor === 'A') ? 11 : 10
+            : valor * 1;
+}
+
+const carta = pedirCarta();
+console.log(valorCarta(carta));
