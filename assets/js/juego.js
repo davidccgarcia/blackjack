@@ -14,6 +14,8 @@ let puntosJugador = 0,
 
 // Referencias HTML
 const btnNuevaCarta = document.querySelector('#btnNuevaCarta');
+const divJugadorCartas = document.querySelector('#jugador-carta');
+
 const puntosHTML = document.querySelectorAll('small');
 
 // Esta función se encarga de ordenar los elementos del array (Mezclar la baraja)
@@ -80,4 +82,18 @@ btnNuevaCarta.addEventListener('click', () => {
     puntosJugador = puntosJugador + valorCarta(carta);
 
     puntosHTML[0].innerText = puntosJugador;
+    const imgCarta = document.createElement('img');
+    // <img class="carta" src="assets/cartas/10C.png" alt="carta-10C">
+    imgCarta.src = `assets/cartas/${ carta }.png`;
+    imgCarta.classList.add('carta');
+    imgCarta.alt = 'Carta';
+    divJugadorCartas.append(imgCarta);
+
+    if (puntosJugador > 21) {
+        console.warn('Lo siento mucho, perdiste!');
+        btnNuevaCarta.disabled = true;
+    } else if (puntosJugador === 21) {
+        console.warn('21, genial!');
+        btnNuevaCarta.disabled = true;
+    }
 });
