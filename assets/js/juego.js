@@ -14,7 +14,10 @@ let puntosJugador = 0,
 
 // Referencias HTML
 const btnNuevaCarta = document.querySelector('#btnNuevaCarta');
+const btnDetener = document.querySelector('#btnDetener');
+
 const divJugadorCartas = document.querySelector('#jugador-carta');
+const divComputadoraCartas = document.querySelector('#computadora-carta');
 
 const puntosHTML = document.querySelectorAll('small');
 
@@ -72,6 +75,28 @@ const valorCarta = (carta) => {
             : valor * 1;
 }
 
+// Esta función le permite a la computadora mostras las cartas en el HTML
+const turnoComputadora = (puntosMinimos) => {
+    do {
+
+        const carta = pedirCarta();
+        puntosComputadora = puntosComputadora + valorCarta(carta);
+    
+        puntosHTML[1].innerText = puntosComputadora;
+        const imgCarta = document.createElement('img');
+        // <img class="carta" src="assets/cartas/10C.png" alt="carta-10C">
+        imgCarta.src = `assets/cartas/${ carta }.png`;
+        imgCarta.classList.add('carta');
+        imgCarta.alt = 'Carta';
+        divComputadoraCartas.append(imgCarta);
+
+        if (puntosMinimos > 21) {
+            break;
+        }
+
+    } while ( (puntosComputadora < puntosMinimos) && (puntosMinimos <= 21) )
+}
+
 // Eventos
 /**
  * Este detector de eventos se encarga de obtener y 
@@ -92,8 +117,19 @@ btnNuevaCarta.addEventListener('click', () => {
     if (puntosJugador > 21) {
         console.warn('Lo siento mucho, perdiste!');
         btnNuevaCarta.disabled = true;
+        btnDetener.disabled = true;
+        turnoComputadora(puntosJugador);
     } else if (puntosJugador === 21) {
         console.warn('21, genial!');
         btnNuevaCarta.disabled = true;
+        btnDetener.disabled = true;
+        turnoComputadora(puntosJugador);
     }
+});
+
+btnDetener.addEventListener('click', () => {
+    btnNuevaCarta.disabled = true;
+    btnDetener.disabled = true;
+
+    turnoComputadora(puntosJugador);
 });
