@@ -51,11 +51,19 @@
 
     // Esta función me permite inicializar el juego
     const inicializarJuego = ( numJugadores = 2 ) => {
+        
         deck = crearDeck();
+        puntosJugadores = [];
         
         for (let i = 0; i < numJugadores; i++) {
             puntosJugadores.push(0);
         }
+
+        puntosHTML.forEach( elem => elem.innerText = 0 );
+        divCartasJugadores.forEach( elem => elem.innerHTML = '' );
+
+        btnNuevaCarta.disabled = false;
+        btnDetener.disabled = false;
     }
 
     // Esta función me permite tomar una carta
@@ -102,6 +110,24 @@
         divCartasJugadores[turno].append(imgCarta);
     }
 
+    // Esta función me permite determinar quien es el ganador del juego
+    const determinarGanador = () => {
+        
+        const [ puntosMinimos, puntosComputadora ] = puntosJugadores;
+
+        setTimeout(() => {
+            if (puntosComputadora === puntosMinimos) {
+                alert('Nadie gana :(');
+            } else if (puntosMinimos > 21) {
+                alert('computadora gana!');
+            } else if (puntosComputadora > 21) {
+                alert('Jugador gana!');
+            } else {
+                alert('Computadora gana!');
+            }
+        }, 30);
+    }
+
     // Esta función le permite a la computadora mostras las cartas en el HTML
     const turnoComputadora = ( puntosMinimos ) => {
 
@@ -118,17 +144,7 @@
 
         } while ( (puntosComputadora < puntosMinimos) && (puntosMinimos <= 21) )
 
-        setTimeout(() => {
-            if (puntosComputadora === puntosMinimos) {
-                alert('Nadie gana :(');
-            } else if (puntosMinimos > 21) {
-                alert('computadora gana!');
-            } else if (puntosComputadora > 21) {
-                alert('Jugador gana!');
-            } else {
-                alert('Computadora gana!');
-            }
-        }, 20);
+        determinarGanador();
     }
 
     // Eventos
@@ -162,23 +178,7 @@
     });
 
     btnNuevoJuego.addEventListener('click', () => {
-        console.clear();
         inicializarJuego();
-        /* deck = [];
-        crearDeck(); */
-
-        /* puntosHTML.forEach((punto) => {
-            punto.innerText = 0;
-        });
-
-        puntosJugador     = 0;
-        puntosComputadora = 0;
-
-        divJugadorCartas.innerHTML     = '';
-        divComputadoraCartas.innerHTML = '';
-
-        btnNuevaCarta.disabled = false;
-        btnDetener.disabled = false; */
     });
 
 })();
