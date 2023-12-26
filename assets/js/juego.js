@@ -1,5 +1,7 @@
 (() => {
 
+    'use strict';
+
     /**
      * 2C = Two of Clubs (Tréboles)
      * 2D = Two of Diamonds (Diamantes)
@@ -11,16 +13,15 @@
     let tipos = ['C', 'D', 'H', 'S'];
     let especiales = ['A', 'J', 'Q', 'K'];
 
-    let puntosJugador = 0,
-        puntosComputadora = 0;
+    let puntosJugadores = [];
 
     // Referencias HTML
-    const btnNuevaCarta = document.querySelector('#btnNuevaCarta');
-    const btnDetener    = document.querySelector('#btnDetener');
-    const btnNuevoJuego = document.querySelector('#btnNuevoJuego');
+    const btnNuevaCarta = document.querySelector('#btnNuevaCarta'),
+          btnDetener    = document.querySelector('#btnDetener'),
+          btnNuevoJuego = document.querySelector('#btnNuevoJuego');
 
-    const divJugadorCartas     = document.querySelector('#jugador-carta');
-    const divComputadoraCartas = document.querySelector('#computadora-carta');
+    const divJugadorCartas     = document.querySelector('#jugador-carta'),
+          divComputadoraCartas = document.querySelector('#computadora-carta');
 
     const puntosHTML = document.querySelectorAll('small');
 
@@ -31,6 +32,8 @@
 
     // Esta función crea un nuevo deck
     const crearDeck = () => {
+        deck = [];
+
         for (let i = 2; i <= 10; i++) {
             for (let tipo of tipos) {
                 deck.push(i + tipo);
@@ -43,12 +46,20 @@
             }
         }
 
-        // console.log(deck);
-        shuffle(deck);
-        console.log(deck);
+        
+        return shuffle(deck);
     }
 
-    crearDeck();
+    // Esta función me permite inicializar el juego
+    const inicializarJuego = ( numJugadores = 2 ) => {
+        deck = crearDeck();
+        
+        for (let i = 0; i < numJugadores; i++) {
+            puntosJugadores.push(0);
+        }
+
+        console.log({ puntosJugadores });
+    }
 
     // Esta función me permite tomar una carta
     const pedirCarta = () => {
@@ -56,11 +67,9 @@
             throw 'No hay cartas en la baraja';
         }
 
-        const carta = deck.pop();
-        return carta;
+        return deck.pop();
     }
 
-    // pedirCarta();
     /**
      * Esta función me permite saber el valor de una carta
      * 
@@ -79,7 +88,7 @@
     }
 
     // Esta función le permite a la computadora mostras las cartas en el HTML
-    const turnoComputadora = (puntosMinimos) => {
+    const turnoComputadora = ( puntosMinimos ) => {
         do {
 
             const carta = pedirCarta();
@@ -151,8 +160,9 @@
 
     btnNuevoJuego.addEventListener('click', () => {
         console.clear();
-        deck = [];
-        crearDeck();
+        inicializarJuego();
+        /* deck = [];
+        crearDeck(); */
 
         puntosHTML.forEach((punto) => {
             punto.innerText = 0;
